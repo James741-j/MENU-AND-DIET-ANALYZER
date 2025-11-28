@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.0/dist/tesseract.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+
+        #preview {
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+        .console-log {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .console-log div {
+            margin: 2px 0;
+        }
+
+        .error {
+            color: #e74c3c;
+        }
+
+        .success {
+            color: #2ecc71;
+        }
+
+        .info {
+            color: #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Tesseract.js OCR Test</h1>
+    <p>This is a simple test to verify OCR is working correctly.</p>
+
+    <input type="file" id="imageInput" accept="image/*">
+    <br>
+    <img id="preview" style="display:none;">
+
+    <div class="console-log" id="console"></div>
+
+    <h3>Extracted Text:</h3>
+    <div id="result">No file selected yet...</div>
+
+    <script>
+        const consoleDiv = document.getElementById('console');
+
+        function log(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = type;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleDiv.appendChild(div);
+            consoleDiv.scrollTop = consoleDiv.scrollHeight;
+            console.log(message);
+        }
+
+        document.getElementById('imageInput').addEventListener('change', async function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            log('File selected: ' + file.name);
+
+            const preview = document.getElementById('preview');
+            preview.style.display = 'block';
+            preview.src = URL.createObjectURL(file);
+
+            const result = document.getElementById('result');
+            result.textContent = 'Processing...';
+
+            try {
+                log('Initializing Tesseract worker...', 'info');
+
+                const worker = await Tesseract.createWorker({
+                    lang: 'eng',
+                    logger: m => {
+                        if (m.status) {
+                            log(`Status: ${m.status} - Progress: ${Math.round(m.progress * 100)}%`, 'info');
+                        }
+                    }
+                });
+
+                log('Worker initialized successfully!', 'success');
+                log('Starting OCR recognition...', 'info');
+
+                const { data: { text, confidence } } = await worker.recognize(file);
+
+                log(`OCR completed! Confidence: ${confidence.toFixed(2)}%`, 'success');
+                result.textContent = `Confidence: ${confidence.toFixed(2)}%\n\nExtracted Text:\n${text}`;
+
+                await worker.terminate();
+                log('Worker terminated', 'info');
+
+            } catch (error) {
+                log('ERROR: ' + error.message, 'error');
+                log('Stack: ' + error.stack, 'error');
+                result.textContent = 'Error: ' + error.message;
+            }
+        });
+
+        log('Test page loaded. Ready to process images.', 'success');
+    </script>
+</body>
+
+</html>

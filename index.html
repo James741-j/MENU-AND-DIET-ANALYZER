@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mess Menu Analyzer - Smart Diet Tracking for Students</title>
+    <meta name="description" content="AI-powered mess menu analyzer for college students. Track nutrition, get personalized insights, and make healthier food choices.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Tesseract.js for OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.0/dist/tesseract.min.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <h1>Mess Menu Analyzer</h1>
+                </div>
+                <nav class="nav">
+                    <button class="nav-btn active" data-tab="upload">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <span>Upload</span>
+                    </button>
+                    <button class="nav-btn" data-tab="analysis">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Analysis</span>
+                    </button>
+                    <button class="nav-btn" data-tab="chat">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat</span>
+                    </button>
+                    <button class="nav-btn" data-tab="trends">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Trends</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            
+            <!-- Upload Tab -->
+            <section class="tab-content active" id="upload-tab">
+                <div class="upload-section">
+                    <div class="upload-card">
+                        <div class="upload-header">
+                            <h2>Upload Mess Menu</h2>
+                            <p>Take a photo or type today's menu to get started</p>
+                        </div>
+                        
+                        <div class="upload-methods">
+                            <!-- Image Upload -->
+                            <div class="upload-method">
+                                <label for="image-upload" class="upload-box">
+                                    <i class="fas fa-camera"></i>
+                                    <h3>Upload Photo</h3>
+                                    <p>Click to select menu image</p>
+                                    <input type="file" id="image-upload" accept="image/*" hidden>
+                                </label>
+                            </div>
+                            
+                            <!-- Text Input -->
+                            <div class="upload-method">
+                                <div class="text-input-box">
+                                    <i class="fas fa-keyboard"></i>
+                                    <h3>Type Menu</h3>
+                                    <textarea id="menu-text-input" placeholder="Enter menu items (one per line)&#10;Example:&#10;Aloo Paratha&#10;Chole&#10;Rice&#10;Dal"></textarea>
+                                    <button class="btn btn-primary" id="process-text-btn">
+                                        <i class="fas fa-check"></i> Process Menu
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Image Preview & OCR Results -->
+                        <div class="preview-section" id="preview-section" style="display: none;">
+                            <div class="image-preview">
+                                <img id="preview-image" src="" alt="Menu preview">
+                            </div>
+                            <div class="ocr-progress" id="ocr-progress">
+                                <div class="spinner"></div>
+                                <p>Processing image with OCR...</p>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" id="ocr-progress-fill"></div>
+                                </div>
+                            </div>
+                            <div class="ocr-result" id="ocr-result" style="display: none;">
+                                <h3>Extracted Menu Items:</h3>
+                                <div class="extracted-items" id="extracted-items"></div>
+                                <button class="btn btn-primary" id="analyze-menu-btn">
+                                    <i class="fas fa-brain"></i> Analyze with AI
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analysis Tab -->
+            <section class="tab-content" id="analysis-tab">
+                <div class="analysis-section">
+                    <div class="analysis-header">
+                        <h2>Today's Nutrition Analysis</h2>
+                        <button class="btn btn-secondary" id="save-meal-btn">
+                            <i class="fas fa-save"></i> Save to Weekly Tracker
+                        </button>
+                    </div>
+                    
+                    <!-- Nutrition Summary Cards -->
+                    <div class="nutrition-cards">
+                        <div class="nutrition-card calories">
+                            <div class="card-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Calories</h3>
+                                <p class="value" id="total-calories">0</p>
+                                <p class="goal">Goal: 2000 kcal</p>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-card protein">
+                            <div class="card-icon">
+                                <i class="fas fa-drumstick-bite"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Protein</h3>
+                                <p class="value" id="total-protein">0g</p>
+                                <p class="goal">Goal: 50g</p>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-card carbs">
+                            <div class="card-icon">
+                                <i class="fas fa-bread-slice"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Carbs</h3>
+                                <p class="value" id="total-carbs">0g</p>
+                                <p class="goal">Goal: 275g</p>
+                            </div>
+                        </div>
+                        
+                        <div class="nutrition-card fat">
+                            <div class="card-icon">
+                                <i class="fas fa-cheese"></i>
+                            </div>
+                            <div class="card-content">
+                                <h3>Fat</h3>
+                                <p class="value" id="total-fat">0g</p>
+                                <p class="goal">Goal: 65g</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detailed Food Items -->
+                    <div class="food-details-section">
+                        <h3>Menu Items Breakdown</h3>
+                        <div class="food-items-list" id="food-items-list">
+                            <div class="empty-state">
+                                <i class="fas fa-utensils"></i>
+                                <p>No menu analyzed yet. Upload a menu to get started!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Insights -->
+                    <div class="insights-section">
+                        <h3><i class="fas fa-lightbulb"></i> AI-Powered Insights</h3>
+                        <div class="insights-content" id="insights-content">
+                            <div class="loading-insights">
+                                <div class="spinner"></div>
+                                <p>Analyzing your meal...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Chat Tab -->
+            <section class="tab-content" id="chat-tab">
+                <div class="chat-section">
+                    <div class="chat-header">
+                        <h2><i class="fas fa-robot"></i> Nutrition Assistant</h2>
+                        <p>Ask me anything about nutrition, meals, or healthy eating!</p>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="chat-message bot">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <p>Hi! 👋 I'm your nutrition assistant. I can help you with:</p>
+                                    <ul>
+                                        <li>Understanding your meal's nutrition</li>
+                                        <li>Suggesting healthier alternatives</li>
+                                        <li>Answering questions about diet and health</li>
+                                        <li>Providing meal planning tips</li>
+                                    </ul>
+                                    <p>What would you like to know?</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <input type="text" id="chat-input" placeholder="Ask about nutrition, healthier options, meal planning..." />
+                            <button class="btn btn-primary" id="chat-send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trends Tab -->
+            <section class="tab-content" id="trends-tab">
+                <div class="trends-section">
+                    <div class="trends-header">
+                        <h2>Weekly Nutrition Trends</h2>
+                        <button class="btn btn-secondary" id="clear-data-btn">
+                            <i class="fas fa-trash"></i> Clear Data
+                        </button>
+                    </div>
+                    
+                    <!-- Charts -->
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <h3>Daily Calorie Trends</h3>
+                            <canvas id="calories-chart"></canvas>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <h3>Macronutrient Distribution</h3>
+                            <canvas id="macros-chart"></canvas>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <h3>Protein Intake Over Time</h3>
+                            <canvas id="protein-chart"></canvas>
+                        </div>
+                        
+                        <div class="chart-card">
+                            <h3>Weekly Summary</h3>
+                            <div class="weekly-summary" id="weekly-summary">
+                                <div class="summary-item">
+                                    <i class="fas fa-calendar-week"></i>
+                                    <div>
+                                        <p class="label">Meals Tracked</p>
+                                        <p class="value" id="total-meals">0</p>
+                                    </div>
+                                </div>
+                                <div class="summary-item">
+                                    <i class="fas fa-fire"></i>
+                                    <div>
+                                        <p class="label">Avg. Daily Calories</p>
+                                        <p class="value" id="avg-calories">0 kcal</p>
+                                    </div>
+                                </div>
+                                <div class="summary-item">
+                                    <i class="fas fa-chart-line"></i>
+                                    <div>
+                                        <p class="label">Healthiest Day</p>
+                                        <p class="value" id="best-day">-</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p id="loading-text">Processing...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="config.js"></script>
+    <script src="data-manager.js"></script>
+    <script src="nutrition-api.js"></script>
+    <script src="llm-service.js"></script>
+    <script src="ocr-processor.js"></script>
+    <script src="chart-renderer.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
