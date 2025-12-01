@@ -24,7 +24,18 @@ class LLMService {
             });
 
             if (!response.ok) {
-                throw new Error(`API Error: ${response.status}`);
+                const errorText = await response.text();
+                console.error('API Error Response:', errorText);
+
+                if (response.status === 404) {
+                    throw new Error('API endpoint not found. The Gemini API model may have changed. Please check config.js for the correct API URL.');
+                } else if (response.status === 400) {
+                    throw new Error('Invalid API key or request format. Please verify your GEMINI_API_KEY in config.js. Get a free key at https://aistudio.google.com/app/apikey');
+                } else if (response.status === 403) {
+                    throw new Error('API key is invalid or expired. Please get a new API key at https://aistudio.google.com/app/apikey and update config.js');
+                } else {
+                    throw new Error(`API Error (${response.status}): ${errorText}`);
+                }
             }
 
             const data = await response.json();
