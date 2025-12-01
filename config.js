@@ -4,7 +4,7 @@ const CONFIG = {
   // IMPORTANT: Get your own FREE API key from: https://aistudio.google.com/app/apikey
   // The key below may be invalid or expired - replace it with yours!
   // Instructions: Visit https://aistudio.google.com/app/apikey, create an API key, and paste it below
-  GEMINI_API_KEY: 'AIzaSyDmMoXNokJm5CRVjiLD8kCmG-mdB6TZdH8',
+  GEMINI_API_KEY: 'AIzaSyCgnHTzAaVQ3CDbvEAInm4R4es_oz1a0e4',
   USDA_API_KEY: 'DEMO_KEY', // Get your own from https://fdc.nal.usda.gov/api-key-signup.html
 
   // API Endpoints
@@ -78,3 +78,4 @@ Keep responses concise (2-3 sentences). User question: `
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = CONFIG;
 }
+
