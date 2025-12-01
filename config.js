@@ -1,13 +1,15 @@
 // Application Configuration
 const CONFIG = {
   // API Keys
-  // IMPORTANT: Get your own FREE API key from: https://makersuite.google.com/app/apikey
+  // IMPORTANT: Get your own FREE API key from: https://aistudio.google.com/app/apikey
   // The key below may be invalid or expired - replace it with yours!
-  GEMINI_API_KEY: 'AIzaSyDFHupQsJEnXPJDzumPdrC0SoHT68mX7bk',
+  // Instructions: Visit https://aistudio.google.com/app/apikey, create an API key, and paste it below
+  GEMINI_API_KEY: 'AIzaSyDmMoXNokJm5CRVjiLD8kCmG-mdB6TZdH8',
   USDA_API_KEY: 'DEMO_KEY', // Get your own from https://fdc.nal.usda.gov/api-key-signup.html
 
   // API Endpoints
-  GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent',
+  // Using gemini-2.5-flash - the current stable Gemini model (as of Dec 2025)
+  GEMINI_API_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',
   USDA_API_URL: 'https://api.nal.usda.gov/fdc/v1',
 
   // Nutritional Thresholds and Goals
