@@ -424,4 +424,3 @@ document.addEventListener('DOMContentLoaded', () => {
     const app = new MessMenuAnalyzer();
     console.log('🍽️ Mess Menu Analyzer initialized!');
 });
-
