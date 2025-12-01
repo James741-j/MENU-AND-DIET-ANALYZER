@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mess Menu Analyzer - Smart Diet Tracking for Students</title>
-    <meta name="description" content="AI-powered mess menu analyzer for college students. Track nutrition, get personalized insights, and make healthier food choices.">
-    
+    <meta name="description"
+        content="AI-powered mess menu analyzer for college students. Track nutrition, get personalized insights, and make healthier food choices.">
+
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
+
     <!-- Tesseract.js for OCR -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5.0.0/dist/tesseract.min.js"></script>
-    
+
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <!-- Header -->
     <header class="header">
@@ -55,41 +59,32 @@
     <!-- Main Content -->
     <main class="main">
         <div class="container">
-            
+
             <!-- Upload Tab -->
             <section class="tab-content active" id="upload-tab">
                 <div class="upload-section">
                     <div class="upload-card">
                         <div class="upload-header">
-                            <h2>Upload Mess Menu</h2>
-                            <p>Take a photo or type today's menu to get started</p>
+                            <h2>Enter Mess Menu</h2>
+                            <p>Type today's menu to get started</p>
                         </div>
-                        
+
                         <div class="upload-methods">
-                            <!-- Image Upload -->
-                            <div class="upload-method">
-                                <label for="image-upload" class="upload-box">
-                                    <i class="fas fa-camera"></i>
-                                    <h3>Upload Photo</h3>
-                                    <p>Click to select menu image</p>
-                                    <input type="file" id="image-upload" accept="image/*" hidden>
-                                </label>
-                            </div>
-                            
-                            <!-- Text Input -->
-                            <div class="upload-method">
+                            <!-- Text Input Only -->
+                            <div class="upload-method" style="width: 100%; max-width: 600px; margin: 0 auto;">
                                 <div class="text-input-box">
                                     <i class="fas fa-keyboard"></i>
                                     <h3>Type Menu</h3>
-                                    <textarea id="menu-text-input" placeholder="Enter menu items (one per line)&#10;Example:&#10;Aloo Paratha&#10;Chole&#10;Rice&#10;Dal"></textarea>
+                                    <textarea id="menu-text-input"
+                                        placeholder="Enter menu items (one per line)&#10;Example:&#10;Aloo Paratha&#10;Chole&#10;Rice&#10;Dal"></textarea>
                                     <button class="btn btn-primary" id="process-text-btn">
                                         <i class="fas fa-check"></i> Process Menu
                                     </button>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- Image Preview & OCR Results -->
+
+                        <!-- Image Preview & OCR Results (kept for compatibility) -->
                         <div class="preview-section" id="preview-section" style="display: none;">
                             <div class="image-preview">
                                 <img id="preview-image" src="" alt="Menu preview">
@@ -122,7 +117,7 @@
                             <i class="fas fa-save"></i> Save to Weekly Tracker
                         </button>
                     </div>
-                    
+
                     <!-- Nutrition Summary Cards -->
                     <div class="nutrition-cards">
                         <div class="nutrition-card calories">
@@ -135,7 +130,7 @@
                                 <p class="goal">Goal: 2000 kcal</p>
                             </div>
                         </div>
-                        
+
                         <div class="nutrition-card protein">
                             <div class="card-icon">
                                 <i class="fas fa-drumstick-bite"></i>
@@ -146,7 +141,7 @@
                                 <p class="goal">Goal: 50g</p>
                             </div>
                         </div>
-                        
+
                         <div class="nutrition-card carbs">
                             <div class="card-icon">
                                 <i class="fas fa-bread-slice"></i>
@@ -157,7 +152,7 @@
                                 <p class="goal">Goal: 275g</p>
                             </div>
                         </div>
-                        
+
                         <div class="nutrition-card fat">
                             <div class="card-icon">
                                 <i class="fas fa-cheese"></i>
@@ -169,18 +164,18 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Detailed Food Items -->
                     <div class="food-details-section">
                         <h3>Menu Items Breakdown</h3>
                         <div class="food-items-list" id="food-items-list">
                             <div class="empty-state">
                                 <i class="fas fa-utensils"></i>
-                                <p>No menu analyzed yet. Upload a menu to get started!</p>
+                                <p>No menu analyzed yet. Enter a menu to get started!</p>
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- AI Insights -->
                     <div class="insights-section">
                         <h3><i class="fas fa-lightbulb"></i> AI-Powered Insights</h3>
@@ -201,7 +196,7 @@
                         <h2><i class="fas fa-robot"></i> Nutrition Assistant</h2>
                         <p>Ask me anything about nutrition, meals, or healthy eating!</p>
                     </div>
-                    
+
                     <div class="chat-container">
                         <div class="chat-messages" id="chat-messages">
                             <div class="chat-message bot">
@@ -220,9 +215,10 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="chat-input-container">
-                            <input type="text" id="chat-input" placeholder="Ask about nutrition, healthier options, meal planning..." />
+                            <input type="text" id="chat-input"
+                                placeholder="Ask about nutrition, healthier options, meal planning..." />
                             <button class="btn btn-primary" id="chat-send-btn">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
@@ -240,24 +236,24 @@
                             <i class="fas fa-trash"></i> Clear Data
                         </button>
                     </div>
-                    
+
                     <!-- Charts -->
                     <div class="charts-grid">
                         <div class="chart-card">
                             <h3>Daily Calorie Trends</h3>
                             <canvas id="calories-chart"></canvas>
                         </div>
-                        
+
                         <div class="chart-card">
                             <h3>Macronutrient Distribution</h3>
                             <canvas id="macros-chart"></canvas>
                         </div>
-                        
+
                         <div class="chart-card">
                             <h3>Protein Intake Over Time</h3>
                             <canvas id="protein-chart"></canvas>
                         </div>
-                        
+
                         <div class="chart-card">
                             <h3>Weekly Summary</h3>
                             <div class="weekly-summary" id="weekly-summary">
@@ -287,7 +283,7 @@
                     </div>
                 </div>
             </section>
-            
+
         </div>
     </main>
 
@@ -306,4 +302,5 @@
     <script src="chart-renderer.js"></script>
     <script src="app.js"></script>
 </body>
+
 </html>
