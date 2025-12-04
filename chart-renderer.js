@@ -235,3 +235,4 @@ class ChartRenderer {
 
 // Export instance
 const chartRenderer = new ChartRenderer();
+
